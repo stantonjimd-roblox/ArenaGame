@@ -19,7 +19,7 @@ while ($true) {
 
         git add -A
         git commit -m "Auto-sync: $timestamp" | Out-Null
-        git push origin "HEAD:refs/heads/$branch" 2>&1 | Out-Null
+        try { git push origin "HEAD:refs/heads/$branch" -q 2>$null } catch {}
 
         Write-Host "[$timestamp] Pushed changes to $branch"
     }
