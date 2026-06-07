@@ -6,6 +6,8 @@ print("BasicAttack server started!")
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
+local CombatUtil = require(ReplicatedStorage.Shared.CombatUtil)
+
 local remotes = ReplicatedStorage:WaitForChild("Remotes")
 local attackRemote = remotes:WaitForChild("BasicAttack")
 
@@ -33,10 +35,10 @@ attackRemote.OnServerEvent:Connect(function(player, hitPosition)
 		local distance = (otherRoot.Position - rootPart.Position).Magnitude
 
 		if distance <= ATTACK_RANGE then
-			local humanoid = otherCharacter:FindFirstChild("Humanoid")
-			if humanoid then
-				humanoid:TakeDamage(ATTACK_DAMAGE)
+			if CombatUtil.DealDamage(otherCharacter, ATTACK_DAMAGE) then
 				print(player.Name .. " attacked " .. otherPlayer.Name .. " for " .. ATTACK_DAMAGE .. " damage!")
+			else
+				print(otherPlayer.Name .. " dodged the attack!")
 			end
 		end
 	end

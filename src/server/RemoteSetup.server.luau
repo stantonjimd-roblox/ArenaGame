@@ -28,4 +28,17 @@ local warLeap = Instance.new("RemoteEvent")
 warLeap.Name = "WarriorWarLeap"
 warLeap.Parent = remotes
 
+-- Ranger Abilities
+local volley = Instance.new("RemoteEvent")
+volley.Name = "RangerVolley"
+volley.Parent = remotes
+
+local conceal = Instance.new("RemoteEvent")
+conceal.Name = "RangerConceal"
+conceal.Parent = remotes
+
+local vault = Instance.new("RemoteEvent")
+vault.Name = "RangerVault"
+vault.Parent = remotes
+
 print("All remotes created!")

@@ -6,6 +6,8 @@ print("WarriorAbilities server started!")
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
+local CombatUtil = require(ReplicatedStorage.Shared.CombatUtil)
+
 local remotes = ReplicatedStorage:WaitForChild("Remotes")
 local whirlwindRemote = remotes:WaitForChild("WarriorWhirlwind")
 local shieldSlamRemote = remotes:WaitForChild("WarriorShieldSlam")
@@ -58,9 +60,7 @@ whirlwindRemote.OnServerEvent:Connect(function(player)
 			local distance = (otherRoot.Position - rootPart.Position).Magnitude
 
 			if distance <= WHIRLWIND_RADIUS then
-				local humanoid = otherCharacter:FindFirstChild("Humanoid")
-				if humanoid then
-					humanoid:TakeDamage(WHIRLWIND_DAMAGE)
+				if CombatUtil.DealDamage(otherCharacter, WHIRLWIND_DAMAGE) then
 					print(player.Name .. " hit " .. otherPlayer.Name .. " with Whirlwind for " .. WHIRLWIND_DAMAGE)
 				end
 			end
@@ -103,9 +103,9 @@ shieldSlamRemote.OnServerEvent:Connect(function(player, targetPlayer)
 		task.wait(LUNGE_DURATION / LUNGE_STEPS)
 	end
 
-	local humanoid = targetCharacter:FindFirstChild("Humanoid")
-	if humanoid then
-		humanoid:TakeDamage(SHIELD_SLAM_DAMAGE)
+	if not CombatUtil.DealDamage(targetCharacter, SHIELD_SLAM_DAMAGE) then
+		print(targetPlayer.Name .. " dodged Shield Slam!")
+		return
 	end
 
 	local targetHumanoid = targetCharacter:FindFirstChild("Humanoid")
@@ -170,9 +170,7 @@ warLeapRemote.OnServerEvent:Connect(function(player, targetPosition)
 		local distance = (otherRoot.Position - rootPart.Position).Magnitude
 
 		if distance <= WAR_LEAP_RADIUS then
-			local humanoid = otherCharacter:FindFirstChild("Humanoid")
-			if humanoid then
-				humanoid:TakeDamage(WAR_LEAP_DAMAGE)
+			if CombatUtil.DealDamage(otherCharacter, WAR_LEAP_DAMAGE) then
 				print(player.Name .. " hit " .. otherPlayer.Name .. " with War Leap for " .. WAR_LEAP_DAMAGE)
 			end
 		end

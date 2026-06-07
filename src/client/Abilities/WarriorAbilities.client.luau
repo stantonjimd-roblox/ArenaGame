@@ -8,6 +8,18 @@ local UserInputService = game:GetService("UserInputService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local player = Players.LocalPlayer
+
+-- Only activate this kit if the player is actually playing Warrior
+local CLASS_NAME = "Warrior"
+local assignedClass = player:GetAttribute("Class")
+if assignedClass == nil then
+	player:GetAttributeChangedSignal("Class"):Wait()
+	assignedClass = player:GetAttribute("Class")
+end
+if assignedClass ~= CLASS_NAME then
+	return
+end
+
 local mouse = player:GetMouse()
 local CastingState = require(script.Parent.Parent.CastingState)
 
